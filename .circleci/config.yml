@@ -9,9 +9,16 @@ jobs:
           name: Cleanup Existing Files
           command: rm -rf /home/circleci/project && mkdir /home/circleci/project
       - checkout
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Preprocess Data
           command: python preprocess.py
@@ -31,9 +38,16 @@ jobs:
           name: Cleanup Existing Files
           command: rm -rf /home/circleci/project && mkdir /home/circleci/project
       - checkout
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Preprocess Data
           command: python preprocess.py
@@ -53,9 +67,16 @@ jobs:
           name: Cleanup Existing Files
           command: rm -rf /home/circleci/project && mkdir /home/circleci/project
       - checkout
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Preprocess Data
           command: python preprocess.py
@@ -75,9 +96,16 @@ jobs:
           name: Cleanup Existing Files
           command: rm -rf /home/circleci/project && mkdir /home/circleci/project
       - checkout
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Preprocess Data
           command: python preprocess.py
@@ -109,9 +137,16 @@ jobs:
               echo "ERROR: X_train.csv not found!"
               exit 1
             fi
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Train Model A
           command: python train.py --model A
@@ -140,9 +175,16 @@ jobs:
               echo "ERROR: X_train.csv not found!"
               exit 1
             fi
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Train Model B
           command: python train.py --model B
@@ -171,9 +213,16 @@ jobs:
               echo "ERROR: X_train.csv not found!"
               exit 1
             fi
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Train Model C
           command: python train.py --model C
@@ -202,9 +251,16 @@ jobs:
               echo "ERROR: X_train.csv not found!"
               exit 1
             fi
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Train Model D
           command: python train.py --model D
@@ -233,9 +289,16 @@ jobs:
               echo "ERROR: model_A.joblib not found!"
               exit 1
             fi
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Evaluate Model A
           command: python evaluate.py --model A
@@ -260,9 +323,16 @@ jobs:
               echo "ERROR: model_B.joblib not found!"
               exit 1
             fi
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Evaluate Model B
           command: python evaluate.py --model B
@@ -287,9 +357,16 @@ jobs:
               echo "ERROR: model_C.joblib not found!"
               exit 1
             fi
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Evaluate Model C
           command: python evaluate.py --model C
@@ -314,9 +391,16 @@ jobs:
               echo "ERROR: model_D.joblib not found!"
               exit 1
             fi
+      - restore_cache:
+          keys:
+            - python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Install Dependencies
           command: pip install -r requirements.txt
+      - save_cache:
+          paths:
+            - ~/.cache/pip
+          key: python-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: Evaluate Model D
           command: python evaluate.py --model D
