@@ -23,6 +23,72 @@ jobs:
             - y_train.csv
             - y_test.csv
 
+  preprocess_data_B:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Preprocess Data
+          command: python preprocess.py
+      - persist_to_workspace:
+          root: .
+          paths:
+            - X_train.csv
+            - X_test.csv
+            - y_train.csv
+            - y_test.csv
+
+  preprocess_data_C:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Preprocess Data
+          command: python preprocess.py
+      - persist_to_workspace:
+          root: .
+          paths:
+            - X_train.csv
+            - X_test.csv
+            - y_train.csv
+            - y_test.csv
+
+  preprocess_data_D:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Preprocess Data
+          command: python preprocess.py
+      - persist_to_workspace:
+          root: .
+          paths:
+            - X_train.csv
+            - X_test.csv
+            - y_train.csv
+            - y_test.csv
+
   train_model_A:
     docker:
       - image: cimg/python:3.8
@@ -54,6 +120,99 @@ jobs:
           paths:
             - model_A.joblib
 
+  train_model_B:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Debug - List Files Before Training
+          command: ls -la /home/circleci/project
+      - run:
+          name: Check if Data Exists
+          command: |
+            if [ ! -f /home/circleci/project/X_train.csv ]; then
+              echo "ERROR: X_train.csv not found!"
+              exit 1
+            fi
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Train Model B
+          command: python train.py --model B
+      - persist_to_workspace:
+          root: .
+          paths:
+            - model_B.joblib
+
+  train_model_C:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Debug - List Files Before Training
+          command: ls -la /home/circleci/project
+      - run:
+          name: Check if Data Exists
+          command: |
+            if [ ! -f /home/circleci/project/X_train.csv ]; then
+              echo "ERROR: X_train.csv not found!"
+              exit 1
+            fi
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Train Model C
+          command: python train.py --model C
+      - persist_to_workspace:
+          root: .
+          paths:
+            - model_C.joblib
+
+  train_model_D:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Debug - List Files Before Training
+          command: ls -la /home/circleci/project
+      - run:
+          name: Check if Data Exists
+          command: |
+            if [ ! -f /home/circleci/project/X_train.csv ]; then
+              echo "ERROR: X_train.csv not found!"
+              exit 1
+            fi
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Train Model D
+          command: python train.py --model D
+      - persist_to_workspace:
+          root: .
+          paths:
+            - model_D.joblib
+
   evaluate_model_A:
     docker:
       - image: cimg/python:3.8
@@ -81,13 +240,115 @@ jobs:
           name: Evaluate Model A
           command: python evaluate.py --model A
 
+  evaluate_model_B:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Debug - List Files Before Evaluation
+          command: ls -la /home/circleci/project
+      - run:
+          name: Check if Model Exists
+          command: |
+            if [ ! -f /home/circleci/project/model_B.joblib ]; then
+              echo "ERROR: model_B.joblib not found!"
+              exit 1
+            fi
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Evaluate Model B
+          command: python evaluate.py --model B
+
+  evaluate_model_C:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Debug - List Files Before Evaluation
+          command: ls -la /home/circleci/project
+      - run:
+          name: Check if Model Exists
+          command: |
+            if [ ! -f /home/circleci/project/model_C.joblib ]; then
+              echo "ERROR: model_C.joblib not found!"
+              exit 1
+            fi
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Evaluate Model C
+          command: python evaluate.py --model C
+
+  evaluate_model_D:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Debug - List Files Before Evaluation
+          command: ls -la /home/circleci/project
+      - run:
+          name: Check if Model Exists
+          command: |
+            if [ ! -f /home/circleci/project/model_D.joblib ]; then
+              echo "ERROR: model_D.joblib not found!"
+              exit 1
+            fi
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Evaluate Model D
+          command: python evaluate.py --model D
+
 workflows:
   build-and-test:
     jobs:
       - preprocess_data_A
+      - preprocess_data_B
+      - preprocess_data_C
+      - preprocess_data_D
       - train_model_A:
           requires:
             - preprocess_data_A
+      - train_model_B:
+          requires:
+            - preprocess_data_B
+      - train_model_C:
+          requires:
+            - preprocess_data_C
+      - train_model_D:
+          requires:
+            - preprocess_data_D
       - evaluate_model_A:
           requires:
             - train_model_A
+      - evaluate_model_B:
+          requires:
+            - train_model_B
+      - evaluate_model_C:
+          requires:
+            - train_model_C
+      - evaluate_model_D:
+          requires:
+            - train_model_D
