@@ -1,0 +1,93 @@
+version: 2.1
+
+jobs:
+  preprocess_data_A:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Preprocess Data
+          command: python preprocess.py
+      - persist_to_workspace:
+          root: .
+          paths:
+            - X_train.csv
+            - X_test.csv
+            - y_train.csv
+            - y_test.csv
+
+  train_model_A:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Debug - List Files Before Training
+          command: ls -la /home/circleci/project
+      - run:
+          name: Check if Data Exists
+          command: |
+            if [ ! -f /home/circleci/project/X_train.csv ]; then
+              echo "ERROR: X_train.csv not found!"
+              exit 1
+            fi
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Train Model A
+          command: python train.py --model A
+      - persist_to_workspace:
+          root: .
+          paths:
+            - model_A.joblib
+
+  evaluate_model_A:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - run:
+          name: Cleanup Existing Files
+          command: rm -rf /home/circleci/project && mkdir /home/circleci/project
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Debug - List Files Before Evaluation
+          command: ls -la /home/circleci/project
+      - run:
+          name: Check if Model Exists
+          command: |
+            if [ ! -f /home/circleci/project/model_A.joblib ]; then
+              echo "ERROR: model_A.joblib not found!"
+              exit 1
+            fi
+      - run:
+          name: Install Dependencies
+          command: pip install -r requirements.txt
+      - run:
+          name: Evaluate Model A
+          command: python evaluate.py --model A
+
+workflows:
+  build-and-test:
+    jobs:
+      - preprocess_data_A
+      - train_model_A:
+          requires:
+            - preprocess_data_A
+      - evaluate_model_A:
+          requires:
+            - train_model_A
